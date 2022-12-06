@@ -7,4 +7,4 @@ Space Complexity: $O(1)$
 
 ## Similar case in leetcode
 
-[4Sum](https://leetcode.com/problems/4sum/)
+[18. 4Sum](https://leetcode.com/problems/4sum/)

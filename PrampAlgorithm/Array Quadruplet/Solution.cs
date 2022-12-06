@@ -32,7 +32,7 @@ namespace PrampAlgorithm.Array_Quadruplet
                                 if (sum == s) return new int[] { arr[i], arr[j], arr[l], arr[r] };
                                 else if (sum > s)
                                     --r;
-                                else l++;
+                                else ++l;
                             }
                         }
                     }
