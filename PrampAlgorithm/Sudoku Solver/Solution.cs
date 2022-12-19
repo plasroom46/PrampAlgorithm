@@ -14,6 +14,7 @@ namespace PrampAlgorithm.Sudoku_Solver
             bool[,] rows = new bool[9, 9];
             bool[,] cols = new bool[9, 9];
             bool[,] subs = new bool[9, 9];
+            // remember the numbers that are used 
             for (int r = 0; r < 9; ++r)
             {
                 for (int c = 0; c < 9; ++c)
@@ -37,12 +38,16 @@ namespace PrampAlgorithm.Sudoku_Solver
             if (r == 9) return true;
             else
             {
+                // next checking point
                 int nc = c == 8 ? 0 : c + 1;
                 int nr = c == 8 ? r + 1 : r;
+                // if the cell has a number, check next point
                 if (board[r, c] != '.') return SudokuSolve(board, rows, cols, subs, nr, nc);
                 int subIndex = r / 3 * 3 + c / 3;
+                // try every possible number
                 for (int i = 0; i < 9; ++i)
                 {
+                    // if the number is not used, try it.
                     if (!rows[r, i] && !cols[c, i] && !subs[subIndex, i])
                     {
                         rows[r, i] = true;

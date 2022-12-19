@@ -18,10 +18,12 @@ namespace PrampAlgorithm.Array_Quadruplet
 
             for (int i = 0; i < n; ++i)
             {
+                // if the previous number is same pass
                 if (i == 0 || arr[i] != arr[i - 1])
                 {
                     for (int j = i + 1; j < n; ++j)
                     {
+                        // if the previous number is same pass
                         if (j == i + 1 || arr[j] != arr[j - 1])
                         {
                             int l = j + 1;
