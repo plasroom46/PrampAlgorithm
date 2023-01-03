@@ -21,40 +21,45 @@ namespace PrampAlgorithm.Basic_Regex_Parser
             //                            or dp[i][j] = dp[i][j-1]   // in this case, a* counts as single a
             //                            or dp[i][j] = dp[i][j-2]   // in this case, a* counts as empty
 
-            int textLength = text.Length;
-            int patternLength = pattern.Length;
-            bool[][] dp = new bool[textLength + 1][];
-            for (int i = 0; i <= textLength; i++)
+            if (text == null || pattern == null) return false;
+            else
             {
-                dp[i] = new bool[patternLength + 1];
-            }
-            dp[0][0] = true;
-            for (int j = 1; j < patternLength; j++)
-            {
-                if (pattern[j] == '*')
-                    dp[0][j + 1] = dp[0][j - 1];
-            }
-            for (int i = 0; i < textLength; i++)
-            {
-                for (int j = 0; j < patternLength; j++)
+                int textLength = text.Length;
+                int patternLength = pattern.Length;
+                bool[][] dp = new bool[textLength + 1][];
+                for (int i = 0; i <= textLength; i++)
                 {
-                    if (text[i] == pattern[j])
-                        dp[i + 1][j + 1] = dp[i][j];
-                    else if (pattern[j] == '.')
-                        dp[i + 1][j + 1] = dp[i][j];
-                    else if (pattern[j] == '*')
-                    {
-                        //in this case, a* only counts as empty
-                        if (text[i] != pattern[j - 1] && pattern[j - 1] != '.')
-                            dp[i + 1][j + 1] = dp[i + 1][j - 1];
-                        else
-                            dp[i + 1][j + 1] = dp[i][j + 1] // in this case, a* counts as multiple a 
-                                            || dp[i + 1][j] // in this case, a* counts as single a
-                                            || dp[i + 1][j - 1]; // in this case, a* counts as empty
-                    }                       
+                    dp[i] = new bool[patternLength + 1];
                 }
+                dp[0][0] = true;
+                // It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.
+                for (int j = 2; j <= patternLength; j++)
+                {
+                    if (pattern[j - 1] == '*' && dp[0][j - 2]) dp[0][j] = true;
+                }
+                for (int i = 1; i <= textLength; i++)
+                {
+                    for (int j = 1; j <= patternLength; j++)
+                    {
+                        if (text[i - 1] == pattern[j - 1])
+                            dp[i][j] = dp[i - 1][j - 1];
+                        else if (pattern[j - 1] == '.')
+                            dp[i][j] = dp[i - 1][j - 1];
+                        else if (pattern[j - 1] == '*')
+                        {
+                            //in this case, a* only counts as empty
+                            if (text[i - 1] != pattern[j - 2] && pattern[j - 2] != '.')
+                                dp[i][j] = dp[i][j - 2];
+                            else
+                                dp[i][j] =
+                                    dp[i - 1][j] ||     // in this case, a* counts as multiple a 
+                                    dp[i][j - 1] ||     // in this case, a* counts as single a             
+                                    dp[i][j - 2];   // in this case, a* counts as empty
+                        }
+                    }
+                }
+                return dp[textLength][patternLength];
             }
-            return dp[textLength][patternLength];
         }
 
         public void Run()
