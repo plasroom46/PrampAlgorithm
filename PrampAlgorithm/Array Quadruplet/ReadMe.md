@@ -1,6 +1,6 @@
 # Array Quadruplet
 
-## Two pointer
+## Two Pointers
 
 Time Complexity: $O(n^3)$
 
